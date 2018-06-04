@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": false,
+    "target": "es5",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "outDir": "./dist/",
+    "strict": true,
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "rootDir": ".",
+    "baseUrl": "./src"
+  },
+  // "files": [
+  //   "./src/client/index.tsx",
+  //   "./src/server/index.tsx",
+  //   "@types/invalidate-module/index.d.ts"
+  // ],
+  "exclude": ["node_modules", "dist"]
+}
