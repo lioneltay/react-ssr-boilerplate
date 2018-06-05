@@ -3,13 +3,16 @@ import { renderToString } from "react-dom/server"
 import { Handler } from "express"
 import App from "../pages/index"
 import HTML from "./HTML"
+import { preloadAll } from "lib/async-component"
 
 export default function serverRenderer({
   clientStats,
   serverStats,
   foo,
 }: any): Handler {
-  return (req, res, next) => {
+  return async (req, res, next) => {
+    await preloadAll()
+
     const html = renderToString(
       <HTML>
         <App />

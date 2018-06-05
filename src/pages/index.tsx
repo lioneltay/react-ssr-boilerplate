@@ -1,5 +1,11 @@
 import * as React from "react"
 import { hot } from "react-hot-loader"
+import { asyncComponent } from "lib/async-component"
+// import SomeComponent from "components/SomeComponent"
+
+const AsyncSomeComponent = asyncComponent({
+  loader: () => import("components/SomeComponent"),
+})
 
 interface AppProps {}
 
@@ -23,6 +29,11 @@ class App extends React.Component<AppProps, AppState> {
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Increment
         </button>
+
+        {/* <SomeComponent /> */}
+        <AsyncSomeComponent>
+          <div>Hello There</div>
+        </AsyncSomeComponent>
       </div>
     )
   }
