@@ -1,8 +1,14 @@
 import * as React from "react"
 import { hot } from "react-hot-loader"
 
-class App extends React.Component {
-  constructor(props) {
+interface AppProps {}
+
+interface AppState {
+  count: number
+}
+
+class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
     super(props)
 
     this.state = {
@@ -13,7 +19,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Cool Awesome! {this.state.count}</h1>
+        <h1>This Is Awesome! {this.state.count}</h1>
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Increment
         </button>
