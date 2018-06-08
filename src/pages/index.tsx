@@ -4,7 +4,10 @@ import { asyncComponent } from "lib/async-component"
 // import SomeComponent from "components/SomeComponent"
 
 const AsyncSomeComponent = asyncComponent({
-  loader: () => import("components/SomeComponent"),
+  loader: () =>
+    import("components/SomeComponent").catch(err => {
+      return console.log("why", err) as never
+    }),
 })
 
 interface AppProps {}
@@ -25,7 +28,7 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <div>
-        <h1>This Is Awesome! {this.state.count}</h1>
+        <h1>This Is Cool! {this.state.count}</h1>
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Increment
         </button>

@@ -14,7 +14,7 @@ module.exports = [
     output: {
       path: dist,
       filename: "client.js",
-      publicPath: "/",
+      publicPath: path.resolve(__dirname, "./dist"),
     },
     devtool: "source-map",
     resolve: {
@@ -40,7 +40,7 @@ module.exports = [
       path: dist,
       filename: "server.js",
       libraryTarget: "commonjs2",
-      publicPath: "/",
+      publicPath: path.resolve(__dirname, "./dist"),
     },
     devtool: "source-map",
     resolve: {
@@ -55,5 +55,11 @@ module.exports = [
         },
       ],
     },
+    plugins: [
+      // Disable chunk splitting in development (webpack-hot-server-middleware doesn't like it)
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1,
+      }),
+    ],
   },
 ]
