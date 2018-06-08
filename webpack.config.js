@@ -16,7 +16,7 @@ module.exports = [
       filename: "client.js",
       publicPath: path.resolve(__dirname, "./dist"),
     },
-    devtool: "source-map",
+    devtool: "eval",
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
       modules: [path.resolve(__dirname, "./src"), "node_modules"],

@@ -1,19 +1,31 @@
 import * as React from "react"
 
-function throwError(message): never {
-  throw Error(meosage)
-}
-
 type ComponentLoader = () => Promise<
   React.ComponentType | { default: React.ComponentType }
 >
 
-const componentLoaders: ComponentLoader[] = []
+let componentLoaders: ComponentLoader[] = []
 
 const DefaultLoadingComponent = () => <div>Loading...</div>
 
-export function preloadAll() {
-  return Promise.all(componentLoaders.map(loader => loader()))
+function queueLoader(loader: ComponentLoader): void {
+  componentLoaders.push(loader)
+}
+
+export function preloadAll(): Promise<void> {
+  const loaders = componentLoaders.slice()
+  componentLoaders = []
+  return Promise.all(loaders.map(loader => loader())).then(() => {
+    if (componentLoaders.length > 0) {
+      return preloadAll()
+    }
+  })
+}
+
+export function preloadReady(): Promise<void> {
+  const loaders = componentLoaders.slice()
+  componentLoaders = []
+  return Promise.all(loaders.map(loader => loader())).then(() => {})
 }
 
 export function asyncComponent({
@@ -25,34 +37,28 @@ export function asyncComponent({
 }): React.ComponentType {
   let LoadedComponent: React.ComponentType | null = null
 
-  const loadComponent: ComponentLoader = () => {
-    console.log("loadComponent")
+  const loadComponent: ComponentLoader = async () => {
     if (!LoadedComponent) {
-      return loader()
-        .then(component => {
-          console.log("loaded", component)
-          if (typeof component === "object") {
-            return (LoadedComponent = component.default)
-          }
-          return (LoadedComponent = component)
-        })
-        .catch(err => {
-          console.log(err)
-          return throwError(err)
-        })
+      const component = await loader()
+      if (typeof component === "object") {
+        return (LoadedComponent = component.default)
+      }
+      return (LoadedComponent = component)
     }
-
-    console.log('skipped')
-
-    return Promise.resolve(LoadedComponent)
+    return LoadedComponent
   }
 
-  componentLoaders.push(loadComponent)
+  queueLoader(loadComponent)
 
   return class LoadableComponent extends React.Component {
     constructor(props: any) {
       super(props)
-      loadComponent()
+      const updateRequired = !LoadedComponent
+      loadComponent().then(component => {
+        if (updateRequired) {
+          this.forceUpdate()
+        }
+      })
     }
 
     render() {

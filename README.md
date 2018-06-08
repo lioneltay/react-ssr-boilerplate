@@ -1,6 +1,7 @@
 # Todos
 
-- [ ] Add code component splitting
+- [x] Add code component splitting
+- [ ] Add ability to preloaded nested components
 
 
 Fix
