@@ -27,7 +27,7 @@ const webpackHotServerMiddleware = (
     entryChunkName: "main",
   }
 ) => {
-  const clientCompiler = findCompiler(multicompiler, "client")
+  // const clientCompiler = findCompiler(multicompiler, "client")
   const serverCompiler = findCompiler(multicompiler, "server")
 
   const filesystem = serverCompiler.outputFileSystem

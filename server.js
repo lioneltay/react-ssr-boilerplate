@@ -19,7 +19,7 @@ app.use(webpackHotServerMiddleware(compiler))
 
 // webpackHotServerMiddleware.doItForMePls(app, multiConfig)
 
-app.use("*", (err, req, res, next) => {
+app.use("*", (err, req, res) => {
   console.log("error", err)
   res.send(err)
 })
