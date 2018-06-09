@@ -28,6 +28,10 @@ const scripts = (stats: any, chunkNames: string[]): string[] => {
 
 export default class HTML extends React.Component<HTMLProps> {
   render() {
+    const outputPath = this.props.clientStats.outputPath
+
+    console.log("HTML", outputPath)
+
     return (
       <html>
         <head>
@@ -51,7 +55,7 @@ export default class HTML extends React.Component<HTMLProps> {
           {scripts(this.props.clientStats, this.props.chunkFilenames).map(
             src => <script src={src} />
           )}
-          <script src="Volumes/Dev/projects/hot-server-demo/dist/client.js" />
+          <script src={`${outputPath}client.js`} />
         </body>
       </html>
     )
