@@ -3,6 +3,22 @@ import { hot } from "react-hot-loader"
 import { asyncComponent } from "lib/async-component"
 // import SomeComponent from "components/SomeComponent"
 // import StaticComponent from "components/StaticComponent"
+import { Route, Link, Redirect } from "react-router-dom"
+
+const AboutPage = asyncComponent({
+  loader: () => import(/* webpackChunkName: "AboutPage" */ "./about"),
+  chunkName: "AboutPage",
+})
+
+const HomePage = asyncComponent({
+  loader: () => import(/* webpackChunkName: "HomePage" */ "./home"),
+  chunkName: "HomePage",
+})
+
+const DeniedPage = asyncComponent({
+  loader: () => import(/* webpackChunkName: "DeniedPage" */ "./denied"),
+  chunkName: "DeniedPage",
+})
 
 const AsyncSomeComponent = asyncComponent({
   loader: () =>
@@ -42,6 +58,21 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Link to="/home">Home</Link>
+          <Link to="/about">About</Link>
+          <Link to="/forbidden">Forbidden</Link>
+        </div>
+
+        <hr />
+
+        <Route path="/home" component={HomePage} />
+        <Route path="/about" component={AboutPage} />
+        <Route path="/denied" component={DeniedPage} />
+        <Route path="/forbidden" render={() => <Redirect to="/denied" />} />
+
+        <hr />
+
         <h1>This Is So Awesome! {this.state.count}</h1>
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Increment

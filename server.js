@@ -6,6 +6,8 @@ const webpackHotMiddleware = require("webpack-hot-middleware")
 const multiConfig = require("./webpack.config.js")
 const app = express()
 
+app.use("/public", express.static("./public"))
+
 const compiler = webpack(multiConfig)
 const clientConfig = multiConfig.find(config => config.name === "client")
 const clientCompiler = compiler.compilers.find(
