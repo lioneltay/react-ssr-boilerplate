@@ -11,7 +11,7 @@ const AsyncSomeComponent = asyncComponent({
         return console.log("why", err) as never
       }
     ),
-  chunkFilename: "SomeComponent",
+  chunkName: "SomeComponent",
 })
 
 export default class StaticComponent extends React.Component {

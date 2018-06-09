@@ -6,7 +6,7 @@ console.log("SomeComponent")
 const SecondComponent = asyncComponent({
   loader: () =>
     import(/* webpackChunkName: "SecondComponent" */ "./SecondComponent"),
-  chunkFilename: "SecondComponent",
+  chunkName: "SecondComponent",
 })
 
 export default class SomeComponent extends React.Component {

@@ -4,7 +4,7 @@ const webpack = require("webpack")
 const WebpackStatsWriterPlugin = require("webpack-stats-plugin")
   .StatsWriterPlugin
 
-const dist = path.join(__dirname, "dist")
+const dist = path.join(__dirname, "./dist/")
 
 module.exports = [
   {
@@ -18,7 +18,7 @@ module.exports = [
       path: dist,
       filename: "client.js",
       chunkFilename: "[name].chunk.js",
-      publicPath: path.resolve(__dirname, "./dist"),
+      publicPath: dist,
     },
     devtool: "cheap-eval-source-map",
     resolve: {
@@ -62,7 +62,7 @@ module.exports = [
       path: dist,
       filename: "server.js",
       libraryTarget: "commonjs2",
-      publicPath: path.resolve(__dirname, "./dist"),
+      publicPath: dist,
     },
     devtool: "source-map",
     resolve: {

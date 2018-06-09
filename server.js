@@ -7,11 +7,13 @@ const multiConfig = require("./webpack.config.js")
 const app = express()
 
 const compiler = webpack(multiConfig)
+const clientConfig = multiConfig.find(config => config.name === "client")
 const clientCompiler = compiler.compilers.find(
   compiler => compiler.name === "client"
 )
 
-app.use(webpackDevMiddleware(compiler))
+const publicPath = clientConfig.output.publicPath
+app.use(webpackDevMiddleware(compiler, { publicPath }))
 
 app.use(webpackHotMiddleware(clientCompiler))
 

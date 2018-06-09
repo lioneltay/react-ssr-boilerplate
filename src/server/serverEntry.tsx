@@ -13,10 +13,18 @@ export default function serverRenderer({
   return async (req, res, next) => {
     await preloadAll()
 
+    const body = renderToString(<App />)
+
+    const chunks = extractChunks()
+    console.log("chunks", chunks)
+
     const html = renderToString(
-      <HTML chunkFilenames={extractChunks()}>
-        <App />
-      </HTML>
+      <HTML
+        chunkFilenames={chunks}
+        clientStats={clientStats}
+        serverStats={serverStats}
+        body={body}
+      />
     )
 
     res.send(`

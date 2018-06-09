@@ -6,12 +6,22 @@ import { asyncComponent } from "lib/async-component"
 
 const AsyncSomeComponent = asyncComponent({
   loader: () =>
-    import(/* webpackChunkName: "SomeComponent" */ "components/SomeComponent").catch(
+    import(/* webpackChunkName: "SomeComponent" */ "components/StaticComponent").catch(
       err => {
         return console.log("why", err) as never
       }
     ),
-  chunkFilename: "SomeComponent",
+  chunkName: "SomeComponent",
+})
+
+const AsyncStaticComponent = asyncComponent({
+  loader: () =>
+    import(/* webpackChunkName: "StaticComponent" */ "components/SomeComponent").catch(
+      err => {
+        return console.log("why", err) as never
+      }
+    ),
+  chunkName: "StaticComponent",
 })
 
 interface AppProps {}

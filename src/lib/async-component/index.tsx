@@ -1,58 +1,95 @@
 import * as React from "react"
+import * as R from "ramda"
 
 type ComponentLoader = () => Promise<
   React.ComponentType | { default: React.ComponentType }
 >
 
-const chunks: string[] = []
-let componentLoaders: ComponentLoader[] = []
+let chunks: string[] = []
+let componentLoaders: {
+  [chunkName: string]: {
+    chunkName: string
+    loader: ComponentLoader
+  }
+} = {}
 
 function addChunk(chunkFilename: string): void {
-  chunks.push(`dist${chunkFilename}.chunk.js`)
+  chunks = R.union(chunks, [chunkFilename])
 }
 
 export function extractChunks(): string[] {
-  return chunks
+  const returnChunks = chunks.slice()
+  chunks = []
+  return returnChunks
 }
 
 const DefaultLoadingComponent = () => <div>Loading...</div>
 
-function queueLoader(loader: ComponentLoader): void {
-  componentLoaders.push(loader)
+function addLoader(chunkName?: string, loader: ComponentLoader): void {
+  if (!chunkName) {
+    return
+  }
+
+  componentLoaders[chunkName] = {
+    chunkName,
+    loader,
+  }
 }
 
+/**
+ * For server side use only.
+ * Loads all chunks so that they may be used synchronously.
+ */
 export function preloadAll(): Promise<void> {
-  const loaders = componentLoaders.slice()
-  componentLoaders = []
+  const loaders = Object.values(componentLoaders).map(
+    loaderData => loaderData.loader
+  )
+  componentLoaders = {}
   return Promise.all(loaders.map(loader => loader())).then(() => {
-    if (componentLoaders.length > 0) {
+    if (Object.values(componentLoaders).length > 0) {
       return preloadAll()
     }
   })
 }
 
 /**
- * Need to implement a loader that attaches a notifier that marks a component as loaded
+ * Recursively loads the required chunks. Only loads chunks marked by the server as being used.
  */
+declare const __REQUIRED_CHUNK_NAMES__: string[]
 export function preloadReady(): Promise<void> {
-  const loaders = componentLoaders.slice()
-  componentLoaders = []
-  return Promise.all(loaders.map(loader => loader())).then(() => {})
+  let chunksToLoad = __REQUIRED_CHUNK_NAMES__
+
+  async function recursivePreload(): Promise<void> {
+    if (chunksToLoad.length === 0) {
+      return
+    }
+
+    await Promise.all(
+      chunksToLoad.map(async chunkName => {
+        const loaderData = componentLoaders[chunkName]
+        if (!loaderData) {
+          return
+        }
+        chunksToLoad = R.difference(chunksToLoad, [chunkName])
+        return loaderData.loader()
+      })
+    )
+
+    return recursivePreload()
+  }
+
+  return recursivePreload()
 }
 
 export function asyncComponent({
   loader,
   LoadingComponent = DefaultLoadingComponent,
-  chunkFilename,
+  chunkName,
 }: {
   loader: ComponentLoader
   LoadingComponent?: React.ComponentType
-  chunkFilename?: string
+  chunkName?: string
 }): React.ComponentType {
-  if (chunkFilename) {
-    addChunk(chunkFilename)
-  }
-
   let LoadedComponent: React.ComponentType | null = null
 
   const loadComponent: ComponentLoader = async () => {
@@ -66,12 +103,17 @@ export function asyncComponent({
     return LoadedComponent
   }
 
-  queueLoader(loadComponent)
+  addLoader(chunkName, loadComponent)
 
   return class LoadableComponent extends React.Component {
     constructor(props: any) {
       super(props)
       const updateRequired = !LoadedComponent
+
+      if (chunkName) {
+        addChunk(chunkName)
+      }
+
       loadComponent().then(component => {
         if (updateRequired) {
           this.forceUpdate()

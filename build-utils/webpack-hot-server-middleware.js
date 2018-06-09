@@ -34,21 +34,22 @@ const webpackHotServerMiddleware = (
   let latestMiddleware
 
   const doneHandler = multiStats => {
-    const serverStats = findStats(multiStats, "server")[0]
+    const serverStats = findStats(multiStats, "server")[0].toJson()
+    const clientStats = findStats(multiStats, "client")[0].toJson()
 
-    const statsData = serverStats.toJson()
-    const outputPath = statsData.outputPath
-    const assetsByChunkName = statsData.assetsByChunkName
+    const outputPath = serverStats.outputPath
+    const assetsByChunkName = serverStats.assetsByChunkName
 
     const mainChunk = assetsByChunkName[options.entryChunkName]
     const filename = Array.isArray(mainChunk)
       ? mainChunk.find(filename => /.js$/.test(filename))
-      : filename
+      : mainChunk
 
-    const pathname = `${outputPath}/${filename}`
+    // TODO check that outputPath ends with /
+    const pathname = `${outputPath}${filename}`
     const file = filesystem.readFileSync(pathname, "utf8")
 
-    latestMiddleware = memoryRequire(file)(serverStats)
+    latestMiddleware = memoryRequire(file)({ clientStats, serverStats })
   }
 
   // Assumes the compiler is already being watched, just hook into the done event
