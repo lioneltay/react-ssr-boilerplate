@@ -2,12 +2,16 @@ import * as React from "react"
 import { hot } from "react-hot-loader"
 import { asyncComponent } from "lib/async-component"
 // import SomeComponent from "components/SomeComponent"
+// import StaticComponent from "components/StaticComponent"
 
 const AsyncSomeComponent = asyncComponent({
   loader: () =>
-    import("components/SomeComponent").catch(err => {
-      return console.log("why", err) as never
-    }),
+    import(/* webpackChunkName: "SomeComponent" */ "components/SomeComponent").catch(
+      err => {
+        return console.log("why", err) as never
+      }
+    ),
+  chunkFilename: "SomeComponent",
 })
 
 interface AppProps {}
@@ -37,6 +41,10 @@ class App extends React.Component<AppProps, AppState> {
         <AsyncSomeComponent>
           <div>Hello There</div>
         </AsyncSomeComponent>
+
+        <hr />
+
+        {/* <StaticComponent /> */}
       </div>
     )
   }

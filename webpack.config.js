@@ -1,6 +1,9 @@
 const path = require("path")
 const webpack = require("webpack")
 
+const WebpackStatsWriterPlugin = require("webpack-stats-plugin")
+  .StatsWriterPlugin
+
 const dist = path.join(__dirname, "dist")
 
 module.exports = [
@@ -14,9 +17,10 @@ module.exports = [
     output: {
       path: dist,
       filename: "client.js",
+      chunkFilename: "[name].chunk.js",
       publicPath: path.resolve(__dirname, "./dist"),
     },
-    devtool: "eval",
+    devtool: "cheap-module-source-map",
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
       modules: [path.resolve(__dirname, "./src"), "node_modules"],
@@ -29,7 +33,25 @@ module.exports = [
         },
       ],
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+    plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new WebpackStatsWriterPlugin({
+        filename: "webpack-stats.json",
+        fields: [
+          "version",
+          "hash",
+          "time",
+          "filteredModules",
+          "outputPath",
+          "assetsByChunkName",
+          "assets",
+          "chunks",
+          "modules",
+          "errors",
+          "warning",
+        ],
+      }),
+    ],
   },
   {
     name: "server",

@@ -4,7 +4,16 @@ type ComponentLoader = () => Promise<
   React.ComponentType | { default: React.ComponentType }
 >
 
+const chunks: string[] = []
 let componentLoaders: ComponentLoader[] = []
+
+function addChunk(chunkFilename: string): void {
+  chunks.push(`dist${chunkFilename}.chunk.js`)
+}
+
+export function extractChunks(): string[] {
+  return chunks
+}
 
 const DefaultLoadingComponent = () => <div>Loading...</div>
 
@@ -22,6 +31,9 @@ export function preloadAll(): Promise<void> {
   })
 }
 
+/**
+ * Need to implement a loader that attaches a notifier that marks a component as loaded
+ */
 export function preloadReady(): Promise<void> {
   const loaders = componentLoaders.slice()
   componentLoaders = []
@@ -31,10 +43,16 @@ export function preloadReady(): Promise<void> {
 export function asyncComponent({
   loader,
   LoadingComponent = DefaultLoadingComponent,
+  chunkFilename,
 }: {
   loader: ComponentLoader
   LoadingComponent?: React.ComponentType
+  chunkFilename?: string
 }): React.ComponentType {
+  if (chunkFilename) {
+    addChunk(chunkFilename)
+  }
+
   let LoadedComponent: React.ComponentType | null = null
 
   const loadComponent: ComponentLoader = async () => {

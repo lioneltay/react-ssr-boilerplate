@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server"
 import { Handler } from "express"
 import App from "../pages/index"
 import HTML from "./HTML"
-import { preloadAll } from "lib/async-component"
+import { preloadAll, extractChunks } from "lib/async-component"
 
 export default function serverRenderer({
   clientStats,
@@ -14,7 +14,7 @@ export default function serverRenderer({
     await preloadAll()
 
     const html = renderToString(
-      <HTML>
+      <HTML chunkFilenames={extractChunks()}>
         <App />
       </HTML>
     )

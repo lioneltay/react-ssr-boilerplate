@@ -2,7 +2,9 @@ import * as React from "react"
 import { asyncComponent } from "lib/async-component"
 
 const SecondComponent = asyncComponent({
-  loader: () => import("./SecondComponent"),
+  loader: () =>
+    import(/* webpackChunkName: "SecondComponent" */ "./SecondComponent"),
+  chunkFilename: "SecondComponent",
 })
 
 export default class SomeComponent extends React.Component {
