@@ -32,7 +32,7 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <div>
-        <h1>This Is Cool! {this.state.count}</h1>
+        <h1>This Is So Awesome! {this.state.count}</h1>
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Increment
         </button>

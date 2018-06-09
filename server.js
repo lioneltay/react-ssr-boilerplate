@@ -1,27 +1,23 @@
 const express = require("express")
 const webpack = require("webpack")
 const webpackDevMiddleware = require("webpack-dev-middleware")
-const webpackHotServerMiddleware = require("webpack-hot-server-middleware")
+const webpackHotServerMiddleware = require("./build-utils/webpack-hot-server-middleware")
 const webpackHotMiddleware = require("webpack-hot-middleware")
-const config = require("./webpack.config.js")
+const multiConfig = require("./webpack.config.js")
 const app = express()
 
-const compiler = webpack(config)
-const clientConfig = config.find(config => config.name === "client")
-
-app.use(
-  webpackDevMiddleware(compiler, {
-    // noInfo: true,
-  })
+const compiler = webpack(multiConfig)
+const clientCompiler = compiler.compilers.find(
+  compiler => compiler.name === "client"
 )
 
-app.use(
-  webpackHotMiddleware(
-    compiler.compilers.find(compiler => compiler.name === "client")
-  )
-)
+app.use(webpackDevMiddleware(compiler))
+
+app.use(webpackHotMiddleware(clientCompiler))
 
 app.use(webpackHotServerMiddleware(compiler))
+
+// webpackHotServerMiddleware.doItForMePls(app, multiConfig)
 
 app.use("*", (err, req, res, next) => {
   console.log("error", err)

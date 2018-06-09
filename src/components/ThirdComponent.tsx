@@ -1,5 +1,7 @@
 import * as React from "react"
 
+console.log("ThirdComponent")
+
 export default class ThirdComponent extends React.Component {
   render() {
     return (

@@ -20,7 +20,7 @@ module.exports = [
       chunkFilename: "[name].chunk.js",
       publicPath: path.resolve(__dirname, "./dist"),
     },
-    devtool: "cheap-module-source-map",
+    devtool: "cheap-eval-source-map",
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
       modules: [path.resolve(__dirname, "./src"), "node_modules"],

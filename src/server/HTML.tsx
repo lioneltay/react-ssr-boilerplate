@@ -19,7 +19,9 @@ export default class HTML extends React.Component<HTMLProps> {
           <div>{this.props.chunkFilenames}</div>
 
           {this.props.chunkFilenames.map(chunkFilename => (
-            <script src={`Volumes/Dev/projects/hot-server-demo/${chunkFilename}`} />
+            <script
+              src={`Volumes/Dev/projects/hot-server-demo/${chunkFilename}`}
+            />
           ))}
           <script src="/client.js" />
         </body>
