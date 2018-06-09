@@ -7,7 +7,7 @@
 - react-router-4
   - [x] Add StaticRouter and BrowserRouter
   - [x] Add redirect
-  - [ ] Add Code splitted routes
+  - [x] Add Code splitted routes
 
 - [ ] Data fetching (generic promises?)
 
@@ -18,6 +18,10 @@
 - [ ] redux SSR
 
 - [ ] styled components SSR
+
+- [ ] CircleCI
+
+- [ ] Lint / build / deploy pipeline
 
 - [ ] How does public path work?
   - How does it work with an in memory file system?

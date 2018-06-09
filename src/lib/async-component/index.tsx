@@ -106,19 +106,23 @@ export function asyncComponent({
   addLoader(chunkName, loadComponent)
 
   return class LoadableComponent extends React.Component {
+    private mounted: boolean = false
+
     constructor(props: any) {
       super(props)
-      const updateRequired = !LoadedComponent
-
       if (chunkName) {
         addChunk(chunkName)
       }
 
       loadComponent().then(component => {
-        if (updateRequired) {
+        if (this.mounted) {
           this.forceUpdate()
         }
       })
+    }
+
+    componentDidMount() {
+      this.mounted = true
     }
 
     render() {

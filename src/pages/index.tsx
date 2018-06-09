@@ -5,17 +5,17 @@ import { asyncComponent } from "lib/async-component"
 // import StaticComponent from "components/StaticComponent"
 import { Route, Link, Redirect } from "react-router-dom"
 
-const AboutPage = asyncComponent({
+const AsyncAboutPage = asyncComponent({
   loader: () => import(/* webpackChunkName: "AboutPage" */ "./about"),
   chunkName: "AboutPage",
 })
 
-const HomePage = asyncComponent({
+const AsyncHomePage = asyncComponent({
   loader: () => import(/* webpackChunkName: "HomePage" */ "./home"),
   chunkName: "HomePage",
 })
 
-const DeniedPage = asyncComponent({
+const AsyncDeniedPage = asyncComponent({
   loader: () => import(/* webpackChunkName: "DeniedPage" */ "./denied"),
   chunkName: "DeniedPage",
 })
@@ -66,9 +66,9 @@ class App extends React.Component<AppProps, AppState> {
 
         <hr />
 
-        <Route path="/home" component={HomePage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/denied" component={DeniedPage} />
+        <Route path="/home" component={AsyncHomePage} />
+        <Route path="/about" component={AsyncAboutPage} />
+        <Route path="/denied" component={AsyncDeniedPage} />
         <Route path="/forbidden" render={() => <Redirect to="/denied" />} />
 
         <hr />
