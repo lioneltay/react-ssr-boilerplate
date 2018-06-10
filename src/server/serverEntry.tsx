@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server"
 import { Handler } from "express"
 import App from "../pages/index"
 import HTML from "./HTML"
-import { preloadAll, extractChunks } from "lib/async-component"
+import { preloadAll, extractChunks } from "async-component"
 import { StaticRouter } from "react-router-dom"
 
 interface StaticRouterContext {

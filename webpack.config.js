@@ -28,7 +28,11 @@ module.exports = [
     devtool: "cheap-eval-source-map",
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
-      modules: [path.resolve(__dirname, "./src"), "node_modules"],
+      modules: [
+        path.resolve(__dirname, "./src"),
+        path.resolve(__dirname, "./lib"),
+        "node_modules",
+      ],
     },
     module: {
       rules: [
@@ -72,7 +76,11 @@ module.exports = [
     devtool: "source-map",
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
-      modules: [path.resolve(__dirname, "./src"), "node_modules"],
+      modules: [
+        path.resolve(__dirname, "./src"),
+        path.resolve(__dirname, "./lib"),
+        "node_modules",
+      ],
     },
     module: {
       rules: [

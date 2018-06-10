@@ -1,6 +1,6 @@
 import * as React from "react"
 import { hot } from "react-hot-loader"
-import { asyncComponent } from "lib/async-component"
+import { asyncComponent } from "async-component"
 // import SomeComponent from "components/SomeComponent"
 // import StaticComponent from "components/StaticComponent"
 import { Route, Link, Redirect } from "react-router-dom"

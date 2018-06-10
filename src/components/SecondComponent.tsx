@@ -1,5 +1,5 @@
 import * as React from "react"
-import { asyncComponent } from "lib/async-component"
+import { asyncComponent } from "async-component"
 
 console.log("SecondComponent")
 
