@@ -4,9 +4,6 @@ const webpack = require("webpack")
 const WebpackStatsWriterPlugin = require("webpack-stats-plugin")
   .StatsWriterPlugin
 
-const AsyncComponentPlugin = require("./build-utils/AsyncComponentPlugin")
-  .AsyncComponentPlugin
-
 // const dist = path.resolve(__dirname, "./dist/")
 const clientDist = path.resolve(__dirname, "./dist/client")
 const serverDist = path.resolve(__dirname, "./dist/server")
@@ -94,9 +91,6 @@ module.exports = [
       // Disable chunk splitting in development (webpack-hot-server-middleware doesn't like it)
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1,
-      }),
-      new AsyncComponentPlugin({
-        filename: "./dist/async-component-manifest.json",
       }),
     ],
   },

@@ -5,39 +5,14 @@ import { asyncComponent } from "async-component"
 // import StaticComponent from "components/StaticComponent"
 import { Route, Link, Redirect } from "react-router-dom"
 
-const AsyncAboutPage = asyncComponent({
-  loader: () => import(/* webpackChunkName: "AboutPage" */ "./about"),
-  chunkName: "AboutPage",
-})
-
-const AsyncHomePage = asyncComponent({
-  loader: () => import(/* webpackChunkName: "HomePage" */ "./home"),
-  chunkName: "HomePage",
-})
-
-const AsyncDeniedPage = asyncComponent({
-  loader: () => import(/* webpackChunkName: "DeniedPage" */ "./denied"),
-  chunkName: "DeniedPage",
-})
-
+const AsyncAboutPage = asyncComponent({ loader: () => import("./about") })
+const AsyncHomePage = asyncComponent({ loader: () => import("./home") })
+const AsyncDeniedPage = asyncComponent({ loader: () => import("./denied") })
 const AsyncSomeComponent = asyncComponent({
-  loader: () =>
-    import(/* webpackChunkName: "SomeComponent" */ "components/StaticComponent").catch(
-      err => {
-        return console.log("why", err) as never
-      }
-    ),
-  chunkName: "SomeComponent",
+  loader: () => import("components/StaticComponent"),
 })
-
 const AsyncStaticComponent = asyncComponent({
-  loader: () =>
-    import(/* webpackChunkName: "StaticComponent" */ "components/SomeComponent").catch(
-      err => {
-        return console.log("why", err) as never
-      }
-    ),
-  chunkName: "StaticComponent",
+  loader: () => import("components/SomeComponent"),
 })
 
 interface AppProps {}

@@ -4,9 +4,7 @@ import { asyncComponent } from "async-component"
 console.log("SomeComponent")
 
 const SecondComponent = asyncComponent({
-  loader: () =>
-    import(/* webpackChunkName: "SecondComponent" */ "./SecondComponent"),
-  chunkName: "SecondComponent",
+  loader: () => import("./SecondComponent"),
 })
 
 export default class SomeComponent extends React.Component {
