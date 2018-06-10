@@ -16,11 +16,13 @@
 - [x] Webpack / babel plugin to remove the need to manually name chunks
   - [x] Read webpack contributers guide for deeper understanding https://webpack.js.org/contribute/writing-a-plugin/
 
-- [ ] error-box display
-
+- [ ] Learn more about babel plugins
 
 - [ ] styled components SSR
   - [ ] Read through all of styled components docs again
+
+- [ ] error-box display
+
 
 - [ ] Data fetching (generic promises?)
 

@@ -5,6 +5,7 @@ import App from "../pages/index"
 import HTML from "./HTML"
 import { preloadAll, extractModules } from "async-component"
 import { StaticRouter } from "react-router-dom"
+import { ServerStyleSheet, StyleSheetManager } from "styled-components"
 
 interface StaticRouterContext {
   action?: "REPLACE"
@@ -21,10 +22,13 @@ export default function serverRenderer({
     await preloadAll()
 
     const context: StaticRouterContext = {}
+    const styleSheet = new ServerStyleSheet()
     const body = renderToString(
-      <StaticRouter location={req.url} context={context}>
-        <App />
-      </StaticRouter>
+      <StyleSheetManager sheet={styleSheet.instance}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </StyleSheetManager>
     )
 
     console.log(context)
@@ -34,9 +38,12 @@ export default function serverRenderer({
 
     const chunks = extractModules()
 
+    console.log(styleSheet.getStyleTags())
+    console.log(styleSheet.getStyleElement())
     const html = renderToString(
       <HTML
         chunkFilenames={chunks}
+        styledComponentsData={{ styleElements: styleSheet.getStyleElement() }}
         clientStats={clientStats}
         serverStats={serverStats}
         body={body}

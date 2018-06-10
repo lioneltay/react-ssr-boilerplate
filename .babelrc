@@ -3,10 +3,8 @@
     "react-hot-loader/babel",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-proposal-class-properties",
-    "./lib/async-component/babel"
+    "./lib/async-component/babel",
+    ["babel-plugin-styled-components", { "ssr": true }]
   ],
-  "presets": [
-    "@babel/preset-react",
-    "@babel/preset-typescript"
-  ]
+  "presets": ["@babel/preset-react", "@babel/preset-typescript"]
 }

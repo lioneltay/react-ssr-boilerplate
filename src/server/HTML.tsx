@@ -8,6 +8,9 @@ interface HTMLProps {
   clientStats: any
   serverStats: any
   body: string
+  styledComponentsData: {
+    styleElements: React.ReactElement<any>
+  }
 }
 
 const scripts = (stats: any, chunkNames: string[]): string[] => {
@@ -38,7 +41,10 @@ export default class HTML extends React.Component<HTMLProps> {
     console.log(outputPath)
 
     console.log(this.props.chunkFilenames)
-    const chunkSrcs = scriptSrcs(this.props.chunkFilenames, this.props.clientStats)
+    const chunkSrcs = scriptSrcs(
+      this.props.chunkFilenames,
+      this.props.clientStats
+    )
     console.log("@@@@@@@@@@@@@")
 
     return (
@@ -66,6 +72,8 @@ export default class HTML extends React.Component<HTMLProps> {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff" />
+
+          {this.props.styledComponentsData.styleElements}
         </head>
 
         <body>
@@ -82,9 +90,7 @@ export default class HTML extends React.Component<HTMLProps> {
           {/* <pre>{JSON.stringify(this.props.clientStats, null, 2)}</pre> */}
           {/* <pre>{JSON.stringify(this.props.serverStats, null, 2)}</pre> */}
 
-          {chunkSrcs.map(
-            src => <script src={src} />
-          )}
+          {chunkSrcs.map(src => <script src={src} />)}
           <script src={`${outputPath}client.js`} />
         </body>
       </html>

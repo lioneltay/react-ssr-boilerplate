@@ -5,6 +5,13 @@ import { asyncComponent } from "async-component"
 // import StaticComponent from "components/StaticComponent"
 import { Route, Link, Redirect } from "react-router-dom"
 
+import styled from "styled-components"
+
+const Button = styled.button`
+  color: tomato;
+  background: green;
+`
+
 const AsyncAboutPage = asyncComponent({ loader: () => import("./about") })
 const AsyncHomePage = asyncComponent({ loader: () => import("./home") })
 const AsyncDeniedPage = asyncComponent({ loader: () => import("./denied") })
@@ -49,9 +56,9 @@ class App extends React.Component<AppProps, AppState> {
         <hr />
 
         <h1>This Is So Awesome! {this.state.count}</h1>
-        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+        <Button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Increment
-        </button>
+        </Button>
 
         {/* <SomeComponent /> */}
         <AsyncSomeComponent>
