@@ -4,7 +4,12 @@ const webpack = require("webpack")
 const WebpackStatsWriterPlugin = require("webpack-stats-plugin")
   .StatsWriterPlugin
 
-const dist = path.join(__dirname, "./dist/")
+const AsyncComponentPlugin = require("./build-utils/AsyncComponentPlugin")
+  .AsyncComponentPlugin
+
+// const dist = path.resolve(__dirname, "./dist/")
+const clientDist = path.resolve(__dirname, "./dist/client")
+const serverDist = path.resolve(__dirname, "./dist/server")
 
 module.exports = [
   {
@@ -15,10 +20,10 @@ module.exports = [
       client: ["webpack-hot-middleware/client", "./src/client/clientEntry.tsx"],
     },
     output: {
-      path: dist,
+      path: clientDist,
       filename: "client.js",
       chunkFilename: "[name].chunk.js",
-      publicPath: dist,
+      publicPath: clientDist,
     },
     devtool: "cheap-eval-source-map",
     resolve: {
@@ -59,10 +64,10 @@ module.exports = [
     target: "node",
     entry: "./src/server/serverEntry.tsx",
     output: {
-      path: dist,
+      path: serverDist,
       filename: "server.js",
       libraryTarget: "commonjs2",
-      publicPath: dist,
+      publicPath: serverDist,
     },
     devtool: "source-map",
     resolve: {
@@ -81,6 +86,9 @@ module.exports = [
       // Disable chunk splitting in development (webpack-hot-server-middleware doesn't like it)
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1,
+      }),
+      new AsyncComponentPlugin({
+        filename: "./dist/async-component-manifest.json",
       }),
     ],
   },

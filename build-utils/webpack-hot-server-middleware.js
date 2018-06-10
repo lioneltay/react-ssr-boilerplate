@@ -2,6 +2,7 @@ const webpackDevMiddleware = require("webpack-dev-middleware")
 const webpackHotMiddleware = require("webpack-hot-middleware")
 const requireFromString = require("require-from-string")
 const webpack = require("webpack")
+const path = require("path")
 
 function memoryRequire(file) {
   const requiredModule = requireFromString(file)
@@ -45,8 +46,7 @@ const webpackHotServerMiddleware = (
       ? mainChunk.find(filename => /.js$/.test(filename))
       : mainChunk
 
-    // TODO check that outputPath ends with /
-    const pathname = `${outputPath}${filename}`
+    const pathname = path.resolve(outputPath, filename)
     const file = filesystem.readFileSync(pathname, "utf8")
 
     latestMiddleware = memoryRequire(file)({ clientStats, serverStats })

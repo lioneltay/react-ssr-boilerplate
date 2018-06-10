@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as path from 'path'
 
 interface HTMLProps {
   // children: React.ReactNode
@@ -19,7 +20,7 @@ const scripts = (stats: any, chunkNames: string[]): string[] => {
       : mainChunk
 
     // TODO check that outputPath ends with '/'
-    const pathname = `${outputPath}${filename}`
+    const pathname = path.resolve(outputPath, filename)
     return pathname
   }
 

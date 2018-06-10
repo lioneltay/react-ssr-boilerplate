@@ -10,7 +10,10 @@
     "moduleResolution": "node",
     "jsx": "react",
     "rootDir": ".",
-    "baseUrl": "./src"
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*", "lib/*"]
+    }
   },
   // "files": [
   //   "./src/client/index.tsx",
