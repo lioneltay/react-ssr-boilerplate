@@ -15,7 +15,7 @@ const clientCompiler = compiler.compilers.find(
 )
 
 const publicPath = clientConfig.output.publicPath
-app.use(webpackDevMiddleware(compiler, { publicPath }))
+app.use(webpackDevMiddleware(compiler, { logLevel: "error", publicPath }))
 
 app.use(webpackHotMiddleware(clientCompiler))
 

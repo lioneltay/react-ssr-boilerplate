@@ -5,6 +5,7 @@ import { asyncComponent } from "async-component"
 // import StaticComponent from "components/StaticComponent"
 import { Route, Link, Redirect } from "react-router-dom"
 
+import DND from "components/DnD"
 import styled from "styled-components"
 
 const Button = styled.button`
@@ -40,6 +41,10 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <div>
+        <DND />
+
+        <hr />
+
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Link to="/home">Home</Link>
           <Link to="/about">About</Link>

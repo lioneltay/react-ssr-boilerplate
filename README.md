@@ -18,8 +18,15 @@
 
 - [ ] Learn more about babel plugins
 
-- [ ] styled components SSR
-  - [ ] Read through all of styled components docs again
+- [x] styled components SSR
+  - [x] Read through all of styled components docs again
+    - attrs, extends, custom-mixins using javascript, referring to other components
+
+- [ ] Drag and drop library
+  - [ ] Use action/reducer pattern
+  - use new Pointer events
+
+- [ ] Webpack tree shaking
 
 - [ ] error-box display
 
