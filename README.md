@@ -13,8 +13,11 @@
   - [x] Add redirect
   - [x] Add Code splitted routes
 
-- [ ] Webpack / babel plugin to remove the need to manually name chunks
-  - [ ] Read webpack contributers guide for deeper understanding https://webpack.js.org/contribute/writing-a-plugin/
+- [x] Webpack / babel plugin to remove the need to manually name chunks
+  - [x] Read webpack contributers guide for deeper understanding https://webpack.js.org/contribute/writing-a-plugin/
+
+- [ ] error-box display
+
 
 - [ ] styled components SSR
   - [ ] Read through all of styled components docs again
@@ -30,6 +33,13 @@
 - [ ] CircleCI
 
 - [ ] Lint / build / deploy pipeline
+  - [ ] linter could be just a call to tsc with 'noEmitError: true' ?
+
+- [ ] Build optimisation
+  - [ ] HMR not as fast as it was initially
+
+- [ ] production builds
+
 
 - [ ] How does public path work?
   - How does it work with an in memory file system?
