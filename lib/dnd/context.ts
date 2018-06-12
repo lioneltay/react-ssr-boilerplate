@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import { DnD } from "./types"
+import * as DnD from "./types/DnD"
 
 const { Consumer, Provider } = createContext({} as DnD.Context)
 

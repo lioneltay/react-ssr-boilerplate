@@ -22,9 +22,32 @@
   - [x] Read through all of styled components docs again
     - attrs, extends, custom-mixins using javascript, referring to other components
 
+- [ ] Clean up async-components implementation
+  - look out for a memory leak (array of loaders)
+
+
+
+
+# Drag and Drop
 - [ ] Drag and drop library
-  - [ ] Use action/reducer pattern
+- [ ] Use action/reducer pattern
+    - discriminated union types
+    - enum action type
   - use new Pointer events
+- [ ] DragPreviews: What to display when dragging
+- [ ] CursorItem: Renders a fixed position element that is centered around the pointer
+
+
+- [ ] Can use typescript for main server script + babel-node
+  - [ ] can use typescript for other lib files too, like webpack-hot-server-middleware
+    - [ ] Add a build complete log to server bundle
+
+- [ ] Add context field to webpack config (fix it so that if you are not in the correct directory it still works)
+
+- [ ] MOVE TO A MONO REPO, remove all the annoyances of syncing versions
+
+- [ ] State debugability without redxu and redux deve tools
+
 
 - [ ] Webpack tree shaking
 

@@ -9,7 +9,7 @@ interface HTMLProps {
   serverStats: any
   body: string
   styledComponentsData: {
-    styleElements: React.ReactElement<any>
+    styleElements: React.ReactElement<any>[]
   }
 }
 
@@ -35,17 +35,10 @@ export default class HTML extends React.Component<HTMLProps> {
   render() {
     const outputPath = this.props.clientStats.outputPath
 
-    console.log("@@@@@@@@@@@@@")
-    console.log("@@@@HTML@@@@@")
-    console.log("@@@@@@@@@@@@@")
-    console.log(outputPath)
-
-    console.log(this.props.chunkFilenames)
     const chunkSrcs = scriptSrcs(
       this.props.chunkFilenames,
       this.props.clientStats
     )
-    console.log("@@@@@@@@@@@@@")
 
     return (
       <html>
@@ -90,7 +83,7 @@ export default class HTML extends React.Component<HTMLProps> {
           {/* <pre>{JSON.stringify(this.props.clientStats, null, 2)}</pre> */}
           {/* <pre>{JSON.stringify(this.props.serverStats, null, 2)}</pre> */}
 
-          {chunkSrcs.map(src => <script src={src} />)}
+          {chunkSrcs.map(src => <script key={src} src={src} />)}
           <script src={`${outputPath}client.js`} />
         </body>
       </html>

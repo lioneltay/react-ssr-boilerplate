@@ -31,15 +31,12 @@ export default function serverRenderer({
       </StyleSheetManager>
     )
 
-    console.log(context)
     if (context.action === "REPLACE" && typeof context.url === "string") {
       return res.redirect(context.url)
     }
 
     const chunks = extractModules()
 
-    console.log(styleSheet.getStyleTags())
-    console.log(styleSheet.getStyleElement())
     const html = renderToString(
       <HTML
         chunkFilenames={chunks}

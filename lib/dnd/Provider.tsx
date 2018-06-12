@@ -1,5 +1,6 @@
 import * as React from "react"
-import { DnD } from "./types"
+import * as DnD from "./types/DnD"
+import * as Action from "./types/Action"
 import { Provider } from "./context"
 
 export default class DnDProvider extends React.Component<{}, DnD.Context> {
@@ -7,38 +8,78 @@ export default class DnDProvider extends React.Component<{}, DnD.Context> {
     super(props)
 
     this.state = {
-      dragData: null,
-      dragType: null,
+      data: null,
+      type: null,
       isDragging: false,
-      beginDrag: this.beginDrag,
-      endDrag: this.endDrag,
-      handleMove: this.handleMove,
+      pointer: {
+        x: 0,
+        y: 0,
+      },
+      dispatch: this.dispatch,
     }
   }
 
+  pointerUpHandler = () => {
+    this.dispatch({
+      type: Action.Type.DragEnd,
+    })
+  }
+
+  pointerMoveHandler = (e: PointerEvent) => {
+    this.dispatch({
+      type: Action.Type.Move,
+      payload: {
+        x: e.clientX,
+        y: e.clientY,
+      },
+    })
+  }
+
   componentDidMount() {
-    document.addEventListener("pointerup", this.endDrag)
+    document.addEventListener("pointerup", this.pointerUpHandler)
+    document.addEventListener("pointermove", this.pointerMoveHandler)
   }
 
   componentWillUnmount() {
-    document.removeEventListener("pointerup", this.endDrag)
+    document.removeEventListener("pointerup", this.pointerUpHandler)
+    document.removeEventListener("pointermove", this.pointerMoveHandler)
   }
 
-  beginDrag = ({
-    dragData,
-    dragType,
-  }: {
-    dragData: object
-    dragType: DnD.Type
-  }) => {
-    this.setState({ dragData, dragType, isDragging: true })
+  dispatch = (action: Action.Action): void => {
+    this.setState(state => this.reducer(state, action))
   }
 
-  endDrag = () => {
-    this.setState({ dragData: null, dragType: null, isDragging: false })
+  reducer(state: DnD.Context, action: Action.Action): DnD.Context {
+    switch (action.type) {
+      case Action.Type.DragEnd: {
+        return {
+          ...state,
+          isDragging: false,
+          data: null,
+          type: null,
+        }
+      }
+      case Action.Type.DragStart: {
+        return {
+          ...state,
+          isDragging: true,
+          data: action.payload.data,
+          type: action.payload.type,
+        }
+      }
+      case Action.Type.Move: {
+        return {
+          ...state,
+          pointer: action.payload,
+        }
+      }
+      case Action.Type.Drop: {
+        return {
+          ...state,
+        }
+      }
+    }
   }
-
-  handleMove = () => {}
 
   render() {
     return <Provider value={this.state}>{this.props.children}</Provider>

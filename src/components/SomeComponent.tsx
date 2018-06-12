@@ -1,8 +1,6 @@
 import * as React from "react"
 import { asyncComponent } from "async-component"
 
-console.log("SomeComponent")
-
 const SecondComponent = asyncComponent({
   loader: () => import("./SecondComponent"),
 })

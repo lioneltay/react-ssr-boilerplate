@@ -14,6 +14,7 @@ const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   cursor: pointer;
 `
 
@@ -23,10 +24,16 @@ const DropBox = styled.div`
   user-select: none;
   height: 150px;
   width: 150px;
-  background-color: yellowgreen;
+  background-color: ${props => (props.highlighted ? "green" : "yellowgreen")};
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `
 
 export default class DnD extends React.Component {
@@ -36,28 +43,107 @@ export default class DnD extends React.Component {
         <div>
           <h1>DnD Playground</h1>
 
-          <Draggable type="Item" data={{ id: "cool beans" }}>
-            {({ makeProps }) => (
-              <Box
-                {...makeProps({
-                  onPointerDown: () => console.log("onPointerDown: cool beans"),
-                })}
-              >
-                Draggable
-              </Box>
-            )}
-          </Draggable>
+          <Container>
+            <Draggable type="Item" data={{ id: 1 }}>
+              {({ makeProps, isDragging }) => (
+                <Box
+                  {...makeProps({
+                    onPointerDown: () =>
+                      console.log("onPointerDown: cool beans"),
+                  })}
+                >
+                  <div>Item</div>
+                  <div>{isDragging ? "Dragging" : "Not Dragging"}</div>
+                </Box>
+              )}
+            </Draggable>
 
-          <Dropzone type="Item">
-            {({ name }) => <DropBox>Dropzone: for Item</DropBox>}
-          </Dropzone>
+            <Draggable type="NotItem" data={{ id: 2 }}>
+              {({ makeProps, isDragging }) => (
+                <Box
+                  {...makeProps({
+                    onPointerDown: () =>
+                      console.log("onPointerDown: cool beans"),
+                  })}
+                >
+                  <div>NotItem</div>
+                  <div>{isDragging ? "Dragging" : "Not Dragging"}</div>
+                </Box>
+              )}
+            </Draggable>
 
-          <Dropzone type="NotItem">
-            {({ name }) => <DropBox>Dropzone: Not for Item</DropBox>}
-          </Dropzone>
+            <Dropzone
+              type="Item"
+              onDrop={({ data, type }) => {
+                return null
+              }}
+            >
+              {({ isDragging, data, type, isOver, domRef }) => (
+                <DropBox
+                  innerRef={domRef}
+                  highlighted={isDragging && type === "Item"}
+                >
+                  <div>Item</div>
+                  <pre>{JSON.stringify({ isOver, isDragging }, null, 2)}</pre>
+                </DropBox>
+              )}
+            </Dropzone>
+
+            <Dropzone
+              type="Item"
+              onDrop={({ data, type }) => {
+                return null
+              }}
+            >
+              {({ isDragging, data, type, isOver, domRef }) => (
+                <DropBox
+                  innerRef={domRef}
+                  highlighted={isOver && isDragging && type === "Item"}
+                >
+                  <div>Item Hover</div>
+                  <pre>{JSON.stringify({ isOver, isDragging }, null, 2)}</pre>
+                </DropBox>
+              )}
+            </Dropzone>
+
+            <Dropzone
+              type="NotItem"
+              onDragEnter={() => {}}
+              onDragLeave={() => {}}
+              onDragOver={() => {
+                return false
+              }}
+            >
+              {({ isDragging, type, data }) => (
+                <DropBox highlighted={isDragging && type === "NotItem"}>
+                  NotItem
+                </DropBox>
+              )}
+            </Dropzone>
+
+            <Dropzone
+              type="NotItem"
+              onDragEnter={() => {}}
+              onDragLeave={() => {}}
+              onDragOver={() => {
+                return false
+              }}
+            >
+              {({ isDragging, type, data, isOver, domRef }) => (
+                <DropBox
+                  innerRef={domRef}
+                  highlighted={isOver && isDragging && type === "NotItem"}
+                >
+                  NotItem Hover
+                </DropBox>
+              )}
+            </Dropzone>
+          </Container>
 
           <Reader>
-            {context => <pre>{JSON.stringify(context, null, 2)}</pre>}
+            {data => {
+              return <pre>{JSON.stringify(data, null, 2)}</pre>
+            }}
           </Reader>
         </div>
       </Provider>
