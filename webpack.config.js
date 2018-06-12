@@ -8,6 +8,7 @@ const serverDist = path.resolve(__dirname, "./dist/server")
 module.exports = [
   {
     name: "client",
+    context: __dirname,
     mode: "none",
     target: "web",
     entry: {
@@ -32,7 +33,13 @@ module.exports = [
       rules: [
         {
           test: /\.[jt]sx?$/,
-          use: "babel-loader",
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              cacheDirectory: true,
+            },
+          },
         },
       ],
     },
@@ -40,6 +47,7 @@ module.exports = [
   },
   {
     name: "server",
+    context: __dirname,
     mode: "none",
     target: "node",
     entry: "./src/server/serverEntry.tsx",
@@ -62,7 +70,13 @@ module.exports = [
       rules: [
         {
           test: /\.[jt]sx?$/,
-          use: "babel-loader",
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              cacheDirectory: true,
+            },
+          },
         },
       ],
     },

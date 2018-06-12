@@ -37,6 +37,8 @@
 - [ ] DragPreviews: What to display when dragging
 - [ ] CursorItem: Renders a fixed position element that is centered around the pointer
 
+- [ ] Read jameiebuilds babel handbook
+
 
 - [ ] Can use typescript for main server script + babel-node
   - [ ] can use typescript for other lib files too, like webpack-hot-server-middleware
