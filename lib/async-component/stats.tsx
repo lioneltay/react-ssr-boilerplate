@@ -1,6 +1,12 @@
 import * as R from "ramda"
 import * as path from "path"
 
+interface WebpackStats {
+  outputPath: string
+  chunks: WebpackChunk[]
+  modules: WebpackModule[]
+}
+
 interface Report {
   outputPath: string
   importMapping: ImportMapping
@@ -28,7 +34,7 @@ interface Reason {
   userRequest: string
 }
 
-function extractImportPathChunkNamesMapping(stats: any): Report {
+function extractImportPathChunkNamesMapping(stats: WebpackStats): Report {
   const chunkMapping: ChunkMapping = stats.chunks.reduce(
     (mapping: ChunkMapping, chunk: WebpackChunk) => {
       mapping[chunk.id] = chunk
@@ -65,7 +71,7 @@ function extractImportPathChunkNamesMapping(stats: any): Report {
 const flatten: <T>(arr: T[][]) => T[] = arr =>
   arr.reduce((items, item) => items.concat(item), [])
 
-function scriptSrcs(imports: string[], stats: any): string[] {
+function scriptSrcs(imports: string[], stats: WebpackStats): string[] {
   const report = extractImportPathChunkNamesMapping(stats)
 
   const srcs = imports.map(userRequest =>

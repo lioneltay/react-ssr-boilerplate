@@ -39,7 +39,7 @@ export default function serverRenderer({
 
     const html = renderToString(
       <HTML
-        chunkFilenames={chunks}
+        chunkNames={chunks}
         styledComponentsData={{ styleElements: styleSheet.getStyleElement() }}
         clientStats={clientStats}
         serverStats={serverStats}

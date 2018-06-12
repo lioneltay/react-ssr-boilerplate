@@ -1,10 +1,8 @@
-const webpackDevMiddleware = require("webpack-dev-middleware")
-const webpackHotMiddleware = require("webpack-hot-middleware")
 const requireFromString = require("require-from-string")
-const webpack = require("webpack")
 const path = require("path")
+const { mergeDeepRight } = require("ramda")
 
-function memoryRequire(file) {
+function requireFromFileString(file) {
   const requiredModule = requireFromString(file)
 
   return typeof requiredModule === "object" && requiredModule.__esModule
@@ -22,12 +20,18 @@ function findCompiler(multicompiler, name) {
   return multicompiler.compilers.find(compiler => compiler.name === name)
 }
 
-const webpackHotServerMiddleware = (
-  multicompiler,
-  options = {
+const webpackHotServerMiddleware = (multicompiler, _options = {}) => {
+  const options = {
     entryChunkName: "main",
+    server: {
+      name: "server",
+    },
+    client: {
+      name: "client",
+    },
+    ..._options,
   }
-) => {
+
   // const clientCompiler = findCompiler(multicompiler, "client")
   const serverCompiler = findCompiler(multicompiler, "server")
 
@@ -35,8 +39,8 @@ const webpackHotServerMiddleware = (
   let latestMiddleware
 
   const doneHandler = multiStats => {
-    const serverStats = findStats(multiStats, "server")[0].toJson()
-    const clientStats = findStats(multiStats, "client")[0].toJson()
+    const serverStats = findStats(multiStats, options.server.name)[0].toJson()
+    const clientStats = findStats(multiStats, options.client.name)[0].toJson()
 
     const outputPath = serverStats.outputPath
     const assetsByChunkName = serverStats.assetsByChunkName
@@ -49,7 +53,7 @@ const webpackHotServerMiddleware = (
     const pathname = path.resolve(outputPath, filename)
     const file = filesystem.readFileSync(pathname, "utf8")
 
-    latestMiddleware = memoryRequire(file)({ clientStats, serverStats })
+    latestMiddleware = requireFromFileString(file)({ clientStats, serverStats })
   }
 
   // Assumes the compiler is already being watched, just hook into the done event
@@ -58,20 +62,6 @@ const webpackHotServerMiddleware = (
   return (req, res, next) => {
     latestMiddleware(req, res, next)
   }
-}
-
-// A quick way to get started
-webpackHotServerMiddleware.doItForMePls = (app, multiConfig) => {
-  const compiler = webpack(multiConfig)
-  const clientCompiler = compiler.compilers.find(
-    compiler => compiler.name === "client"
-  )
-
-  app.use(webpackDevMiddleware(compiler))
-
-  app.use(webpackHotMiddleware(clientCompiler))
-
-  app.use(webpackHotServerMiddleware(compiler))
 }
 
 module.exports = webpackHotServerMiddleware

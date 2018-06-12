@@ -1,10 +1,7 @@
 const path = require("path")
 const webpack = require("webpack")
+const HardSourcePlugin = require("hard-source-webpack-plugin")
 
-const WebpackStatsWriterPlugin = require("webpack-stats-plugin")
-  .StatsWriterPlugin
-
-// const dist = path.resolve(__dirname, "./dist/")
 const clientDist = path.resolve(__dirname, "./dist/client")
 const serverDist = path.resolve(__dirname, "./dist/server")
 
@@ -39,25 +36,7 @@ module.exports = [
         },
       ],
     },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-      new WebpackStatsWriterPlugin({
-        filename: "webpack-stats.json",
-        fields: [
-          "version",
-          "hash",
-          "time",
-          "filteredModules",
-          "outputPath",
-          "assetsByChunkName",
-          "assets",
-          "chunks",
-          "modules",
-          "errors",
-          "warning",
-        ],
-      }),
-    ],
+    plugins: [new webpack.HotModuleReplacementPlugin(), new HardSourcePlugin()],
   },
   {
     name: "server",
@@ -92,6 +71,7 @@ module.exports = [
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1,
       }),
+      new HardSourcePlugin(),
     ],
   },
 ]
