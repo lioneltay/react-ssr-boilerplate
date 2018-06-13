@@ -41,7 +41,7 @@ export default class DnD extends React.Component {
     return (
       <Provider>
         <div>
-          <h1>DnD Playground!!</h1>
+          <h1>DnD Playground!!!</h1>
 
           <Container>
             <Draggable type="Item" data={{ id: 1 }}>

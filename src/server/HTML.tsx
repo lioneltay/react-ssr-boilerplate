@@ -85,6 +85,8 @@ export default class HTML extends React.Component<HTMLProps> {
 
           <div id="app" dangerouslySetInnerHTML={{ __html: this.props.body }} />
 
+          {/* DLL in development Only */}
+          <script src="/build/library/library.dll.js" />
           {chunkSrcs.map(src => <script key={src} src={src} />)}
           <script src={path.resolve(outputPath, "client.js")} />
         </body>

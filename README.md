@@ -39,6 +39,13 @@
 
 - [ ] Read jameiebuilds babel handbook
 
+# Webpack optimisation
+- [x] hard-source-webpack-plugin
+- [x] babel-loader cache
+  - [x] exclude node_modules
+- [x] dll plugin
+- [x] use webpack-node-externals on server bundle since it is run in node environment
+
 
 - [ ] Can use typescript for main server script + babel-node
   - [ ] can use typescript for other lib files too, like webpack-hot-server-middleware

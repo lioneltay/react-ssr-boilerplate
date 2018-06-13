@@ -5,6 +5,9 @@ const HardSourcePlugin = require("hard-source-webpack-plugin")
 const clientDist = path.resolve(__dirname, "./dist/client")
 const serverDist = path.resolve(__dirname, "./dist/server")
 
+const nodeExternals = require('webpack-node-externals');
+
+
 module.exports = [
   {
     name: "client",
@@ -43,13 +46,21 @@ module.exports = [
         },
       ],
     },
-    plugins: [new webpack.HotModuleReplacementPlugin(), new HardSourcePlugin()],
+    plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new HardSourcePlugin(),
+      new webpack.DllReferencePlugin({
+        context: __dirname,
+        manifest: require("./dist/library/library.json"),
+      }),
+    ],
   },
   {
     name: "server",
     context: __dirname,
     mode: "none",
     target: "node",
+    externals: [nodeExternals()],
     entry: "./src/server/serverEntry.tsx",
     output: {
       path: serverDist,

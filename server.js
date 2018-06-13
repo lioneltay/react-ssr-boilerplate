@@ -14,6 +14,8 @@ const clientCompiler = compiler.compilers.find(
   compiler => compiler.name === "client"
 )
 
+app.use("/build", express.static("./dist"))
+
 const publicPath = clientConfig.output.publicPath
 app.use(webpackDevMiddleware(compiler, { logLevel: "error", publicPath }))
 
@@ -22,6 +24,7 @@ app.use(webpackHotMiddleware(clientCompiler))
 app.use(webpackHotServerMiddleware(compiler))
 
 // webpackHotServerMiddleware.doItForMePls(app, multiConfig)
+
 
 app.use("*", (err, req, res) => {
   console.log("error", err)
