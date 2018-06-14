@@ -41,7 +41,7 @@ export default class DnD extends React.Component {
     return (
       <Provider>
         <div>
-          <h1>DnD Playground!!!</h1>
+          <h1>DnD Playground!!!!</h1>
 
           <Container>
             <Draggable type="Item" data={{ id: 1 }}>
@@ -59,8 +59,9 @@ export default class DnD extends React.Component {
             </Draggable>
 
             <Draggable type="NotItem" data={{ id: 2 }}>
-              {({ makeProps, isDragging }) => (
+              {({ makeProps, isDragging, domRef }) => (
                 <Box
+                  innerRef={domRef}
                   {...makeProps({
                     onPointerDown: () =>
                       console.log("onPointerDown: cool beans"),

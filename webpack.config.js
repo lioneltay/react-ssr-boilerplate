@@ -23,7 +23,7 @@ module.exports = [
       chunkFilename: "[name].chunk.js",
       publicPath: clientDist,
     },
-    devtool: "cheap-eval-source-map",
+    devtool: "eval-source-map",
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
       modules: [
