@@ -16,6 +16,7 @@ export default class DnDProvider extends React.Component<{}, DnD.Context> {
         y: 0,
       },
       dispatch: this.dispatch,
+      domNode: null,
     }
   }
 
@@ -57,6 +58,7 @@ export default class DnDProvider extends React.Component<{}, DnD.Context> {
           isDragging: false,
           data: null,
           type: null,
+          domNode: null,
         }
       }
       case Action.Type.DragStart: {
@@ -65,6 +67,11 @@ export default class DnDProvider extends React.Component<{}, DnD.Context> {
           isDragging: true,
           data: action.payload.data,
           type: action.payload.type,
+          domNode: action.payload.domNode || null,
+          pointer: {
+            x: action.payload.pointer.x,
+            y: action.payload.pointer.y,
+          },
         }
       }
       case Action.Type.Move: {

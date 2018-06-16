@@ -14,8 +14,8 @@ export interface State {
 export interface ChildProps extends Read.ChildProps {
   // Whether the Draggable is being dragged
   isDragging: boolean
-  reader: Read.ChildProps
   makeProps: (handlers: Partial<MakePropsInput>) => MakePropsInput
+  domRef: (el: Element) => void
 }
 
 export interface MakePropsInput {

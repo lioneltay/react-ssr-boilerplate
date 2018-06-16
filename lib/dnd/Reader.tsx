@@ -9,20 +9,15 @@ export const getReaderChildProps = ({
   type,
   isDragging,
   pointer,
+  domNode,
 }: DnD.Context): Read.ChildProps => {
-  return isDragging
-    ? {
-        isDragging: true,
-        type,
-        data,
-        pointer,
-      }
-    : {
-        isDragging: false,
-        type: null,
-        data: null,
-        pointer,
-      }
+  return {
+    isDragging: true,
+    type,
+    data,
+    pointer,
+    domNode,
+  }
 }
 
 const x = R.pick(["data", "type", "isDragging"])

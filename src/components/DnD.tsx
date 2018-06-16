@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Draggable, Dropzone, Reader, Provider } from "dnd"
+import { Draggable, Dropzone, Reader, Provider, CursorItem } from "dnd"
 
 import styled from "styled-components"
 
@@ -42,6 +42,8 @@ export default class DnD extends React.Component {
       <Provider>
         <div>
           <h1>DnD Playground!!!!</h1>
+
+          <CursorItem />
 
           <Container>
             <Draggable type="Item" data={{ id: 1 }}>
@@ -142,8 +144,10 @@ export default class DnD extends React.Component {
           </Container>
 
           <Reader>
-            {data => {
-              return <pre>{JSON.stringify(data, null, 2)}</pre>
+            {({ isDragging, pointer }) => {
+              return (
+                <pre>{JSON.stringify({ isDragging, pointer }, null, 2)}</pre>
+              )
             }}
           </Reader>
         </div>

@@ -12,6 +12,11 @@ export interface StartDrag {
   payload: {
     data: object
     type: DnD.Type
+    domNode?: Element | null
+    pointer: {
+      x: number
+      y: number
+    }
   }
 }
 
@@ -22,7 +27,7 @@ export interface EndDrag {
 export interface Move {
   type: Type.Move
   payload: {
-    x: number,
+    x: number
     y: number
   }
 }

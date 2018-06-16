@@ -9,4 +9,5 @@ export interface ChildProps {
   type: DnD.Type | null
   data: DnD.Data | null
   pointer: DnD.Pointer
+  domNode: Element | null
 }

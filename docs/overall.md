@@ -1,5 +1,6 @@
 # Todo
 
+- [ ] Parallel webpack? make use of multiple cores
 - [ ] documentation
 - [ ] Learn more about markdown for documentation writing
   - [ ] Links between markdown documents in vscode

@@ -8,6 +8,12 @@ import { getReaderChildProps } from "./Reader"
 const noop = () => {}
 
 export default class Draggable extends React.Component<Drag.Props, Drag.State> {
+  domNode: Element | null = null
+
+  domRef = (el: Element) => {
+    this.domNode = el
+  }
+
   state = {
     isDragging: false,
   }
@@ -50,9 +56,10 @@ export default class Draggable extends React.Component<Drag.Props, Drag.State> {
       const onPointerDown = inputProps.onPointerDown || noop
 
       return {
-        onPointerDown: (e: React.SyntheticEvent) => {
+        onPointerDown: (e: PointerEvent) => {
           onPointerDown(e)
           console.log("Draggable: onPointerDown")
+          console.log("domRef", this.domNode)
           this.dispatch({ type: Drag.ActionType.DragStart })
 
           context.dispatch({
@@ -60,6 +67,11 @@ export default class Draggable extends React.Component<Drag.Props, Drag.State> {
             payload: {
               data: this.props.data,
               type: this.props.type,
+              domNode: this.domNode,
+              pointer: {
+                x: e.clientX,
+                y: e.clientY,
+              },
             },
           })
         },
@@ -69,9 +81,10 @@ export default class Draggable extends React.Component<Drag.Props, Drag.State> {
 
   getChildProps = (context: DnD.Context): Drag.ChildProps => {
     return {
+      ...getReaderChildProps(context),
       makeProps: this.makePropsFactory(context),
       isDragging: this.state.isDragging,
-      reader: getReaderChildProps(context),
+      domRef: this.domRef,
     }
   }
 
