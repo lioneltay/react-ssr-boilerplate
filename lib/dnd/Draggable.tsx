@@ -58,9 +58,14 @@ export default class Draggable extends React.Component<Drag.Props, Drag.State> {
       return {
         onPointerDown: (e: PointerEvent) => {
           onPointerDown(e)
-          console.log("Draggable: onPointerDown")
-          console.log("domRef", this.domNode)
           this.dispatch({ type: Drag.ActionType.DragStart })
+
+          const { clientX, clientY } = e
+
+          const box =
+            e.currentTarget instanceof Element
+              ? e.currentTarget.getBoundingClientRect()
+              : { top: 0, left: 0 }
 
           context.dispatch({
             type: Action.Type.DragStart,
@@ -71,6 +76,8 @@ export default class Draggable extends React.Component<Drag.Props, Drag.State> {
               pointer: {
                 x: e.clientX,
                 y: e.clientY,
+                offsetX: box.left - clientX,
+                offsetY: box.top - clientY,
               },
             },
           })

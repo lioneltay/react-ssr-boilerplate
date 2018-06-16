@@ -15,8 +15,9 @@ export interface Pointer {
   y: number
 }
 
-type DragInfo =
+export type DragInfo =
   | {
+      domRefAttached: true
       domNode: Element
       offsetX: number
       offsetY: number
@@ -24,23 +25,25 @@ type DragInfo =
       height: number
     }
   | {
-      domNode: null
+      domRefAttached: false
     }
 
-export type Context =
-  | {
-      isDragging: false
-      type: null
-      data: null
-      dragInfo: null
-      dispatch: (action: Action.Action) => void
-      pointer: Pointer
-    }
-  | {
-      isDragging: true
-      type: Type | null
-      data: object | null
-      dragInfo: DragInfo
-      dispatch: (action: Action.Action) => void
-      pointer: Pointer
-    }
+export interface ActiveContext {
+  isDragging: true
+  type: Type
+  data: object
+  dragInfo: DragInfo
+  dispatch: (action: Action.Action) => void
+  pointer: Pointer
+}
+
+export interface InactiveContext {
+  isDragging: false
+  type: null
+  data: null
+  dragInfo: null
+  dispatch: (action: Action.Action) => void
+  pointer: Pointer
+}
+
+export type Context = ActiveContext | InactiveContext

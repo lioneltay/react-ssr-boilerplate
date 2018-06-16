@@ -16,6 +16,8 @@ export interface StartDrag {
     pointer: {
       x: number
       y: number
+      offsetX?: number
+      offsetY?: number
     }
   }
 }

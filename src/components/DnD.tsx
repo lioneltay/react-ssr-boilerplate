@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Draggable, Dropzone, Reader, Provider, CursorItem } from "dnd"
+import { Draggable, Dropzone, Reader, Provider, CursorElement } from "dnd"
 
 import styled from "styled-components"
 
@@ -31,6 +31,10 @@ const DropBox = styled.div`
   flex-direction: column;
 `
 
+const CursorBox = styled.div`
+  background-color: blue;
+`
+
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -41,17 +45,24 @@ export default class DnD extends React.Component {
     return (
       <Provider>
         <div>
-          <h1>So fricken fast</h1>
+          <h1>DnD Playground!!!</h1>
 
-          <CursorItem />
+          <CursorElement>
+            {() => {
+              return (
+                <CursorBox style={{ width: 100, height: "100%" }}>
+                  CursorElement Rendered
+                </CursorBox>
+              )
+            }}
+          </CursorElement>
 
           <Container>
             <Draggable type="Item" data={{ id: 1 }}>
               {({ makeProps, isDragging }) => (
                 <Box
                   {...makeProps({
-                    onPointerDown: () =>
-                      console.log("onPointerDown: cool beans"),
+                    onPointerDown: () => console.log("Usage: Pointer Down"),
                   })}
                 >
                   <div>Item</div>
@@ -117,8 +128,11 @@ export default class DnD extends React.Component {
                 return false
               }}
             >
-              {({ isDragging, type, data }) => (
-                <DropBox highlighted={isDragging && type === "NotItem"}>
+              {({ isDragging, type, data, onPointerUp }) => (
+                <DropBox
+                  highlighted={isDragging && type === "NotItem"}
+                  onPointerUp={onPointerUp}
+                >
                   NotItem
                 </DropBox>
               )}
@@ -150,6 +164,8 @@ export default class DnD extends React.Component {
               )
             }}
           </Reader>
+
+          <div style={{ height: "100vh" }} />
         </div>
       </Provider>
     )

@@ -19,7 +19,7 @@ export interface ChildProps extends Read.ChildProps {
 }
 
 export interface MakePropsInput {
-  onPointerDown(e: React.SyntheticEvent): void
+  onPointerDown(e: PointerEvent): void
 }
 
 export enum ActionType {

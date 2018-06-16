@@ -64,29 +64,26 @@ export default class DnDProvider extends React.Component<{}, DnD.Context> {
       case Action.Type.DragStart: {
         const { domNode } = action.payload
 
-        function getDragInfo(domNode: Element | null | undefined) {
-          if (!domNode) {
-            return {
-              domNode: null
-            }
-          }
-
+        let dragInfo: DnD.DragInfo = { domRefAttached: false }
+        if (domNode) {
           const box = domNode.getBoundingClientRect()
 
-          return {
+          dragInfo = {
+            domRefAttached: true,
             domNode,
             height: box.height,
             width: box.width,
+            offsetX: action.payload.pointer.offsetX || 0,
+            offsetY: action.payload.pointer.offsetY || 0,
           }
         }
-
 
         return {
           ...state,
           isDragging: true,
           data: action.payload.data,
           type: action.payload.type,
-          dragInfo: getDragInfo(action.payload.domNode),
+          dragInfo: dragInfo,
           pointer: {
             x: action.payload.pointer.x,
             y: action.payload.pointer.y,

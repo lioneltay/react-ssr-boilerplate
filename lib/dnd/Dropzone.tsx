@@ -39,6 +39,9 @@ export default class Dropzone extends React.Component<Drop.Props> {
         pointInRectangle(context.pointer, this.domNode.getBoundingClientRect()),
       canDrop: false,
       domRef: this.domRef,
+      onPointerUp: () => {
+        console.log('dropzone: onPointerUp')
+      }
     }
   }
 
