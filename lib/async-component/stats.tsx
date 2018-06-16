@@ -76,7 +76,8 @@ function scriptSrcs(imports: string[], stats: WebpackStats): string[] {
 
   const srcs = imports.map(userRequest =>
     report.importMapping[userRequest].map(filename =>
-      path.resolve(report.outputPath, filename)
+      // path.resolve(report.outputPath, filename)
+      filename
     )
   )
 

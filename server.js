@@ -1,3 +1,4 @@
+const path = require("path")
 const express = require("express")
 const webpack = require("webpack")
 const webpackDevMiddleware = require("webpack-dev-middleware")
@@ -17,14 +18,16 @@ const clientCompiler = compiler.compilers.find(
 app.use("/build", express.static("./dist"))
 
 const publicPath = clientConfig.output.publicPath
-app.use(webpackDevMiddleware(compiler, { logLevel: "error", publicPath }))
+console.log(publicPath)
+app.use(
+  webpackDevMiddleware(compiler, {
+    logLevel: "error",
+  })
+)
 
 app.use(webpackHotMiddleware(clientCompiler))
 
 app.use(webpackHotServerMiddleware(compiler))
-
-// webpackHotServerMiddleware.doItForMePls(app, multiConfig)
-
 
 app.use("*", (err, req, res) => {
   console.log("error", err)

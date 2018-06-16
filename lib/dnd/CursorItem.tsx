@@ -16,10 +16,15 @@ export default class CursorItem extends React.Component {
   render() {
     return (
       <Consumer>
-        {({
-          pointer: { x, y },
-          dragElement: { isDragging, offsetX, offsetY, domNode },
-        }) => {
+        {(context) => {
+          if (!context.isDragging) {
+            context
+            return null
+          }
+
+          context
+          return null
+
           if (!domNode) {
             return null
           }

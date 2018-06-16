@@ -13,23 +13,6 @@ interface HTMLProps {
   }
 }
 
-const scripts = (stats: any, chunkNames: string[]): string[] => {
-  function script(stats: any, chunkName: string) {
-    const outputPath = stats.outputPath
-    const assetsByChunkName = stats.assetsByChunkName
-
-    const mainChunk = assetsByChunkName[chunkName]
-    const filename: string = Array.isArray(mainChunk)
-      ? mainChunk.find(filename => /.js$/.test(filename))
-      : mainChunk
-
-    const pathname = path.resolve(outputPath, filename)
-    return pathname
-  }
-
-  return chunkNames.map(chunkName => script(stats, chunkName))
-}
-
 export default class HTML extends React.Component<HTMLProps> {
   faviconTags() {
     return (
@@ -88,7 +71,8 @@ export default class HTML extends React.Component<HTMLProps> {
           {/* DLL in development Only */}
           <script src="/build/library/library.dll.js" />
           {chunkSrcs.map(src => <script key={src} src={src} />)}
-          <script src={path.resolve(outputPath, "client.js")} />
+          {/* <script src={path.resolve(outputPath, "client.js")} /> */}
+          <script src="client.js" />
         </body>
       </html>
     )

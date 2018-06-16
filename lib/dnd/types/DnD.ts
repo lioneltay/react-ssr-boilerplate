@@ -15,12 +15,24 @@ export interface Pointer {
   y: number
 }
 
+type DragInfo =
+  | {
+      domNode: Element
+      offsetX: number
+      offsetY: number
+      width: number
+      height: number
+    }
+  | {
+      domNode: null
+    }
+
 export type Context =
   | {
       isDragging: false
       type: null
       data: null
-      dragElement: null
+      dragInfo: null
       dispatch: (action: Action.Action) => void
       pointer: Pointer
     }
@@ -28,11 +40,7 @@ export type Context =
       isDragging: true
       type: Type | null
       data: object | null
-      dragElement: {
-        offsetX: number
-        offsetY: number
-        domNode: Element | null
-      }
+      dragInfo: DragInfo
       dispatch: (action: Action.Action) => void
       pointer: Pointer
     }

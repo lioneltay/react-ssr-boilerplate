@@ -5,8 +5,7 @@ const HardSourcePlugin = require("hard-source-webpack-plugin")
 const clientDist = path.resolve(__dirname, "./dist/client")
 const serverDist = path.resolve(__dirname, "./dist/server")
 
-const nodeExternals = require('webpack-node-externals');
-
+const nodeExternals = require("webpack-node-externals")
 
 module.exports = [
   {
@@ -21,7 +20,7 @@ module.exports = [
       path: clientDist,
       filename: "client.js",
       chunkFilename: "[name].chunk.js",
-      publicPath: clientDist,
+      publicPath: "/",
     },
     devtool: "eval-source-map",
     resolve: {
