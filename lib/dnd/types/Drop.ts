@@ -5,7 +5,7 @@ export interface Props {
   children: (data: ChildProps) => React.ReactElement<any>
   type: DnD.Type
   onDrop?: (
-    data: { dragData: DnD.Data; dragType: DnD.Type }
+    data: { data: DnD.Data; type: DnD.Type }
   ) => DnD.DropData | null | void
   onDragEnter?: (data: Read.ChildProps) => void
   onDragLeave?: (data: Read.ChildProps) => void
@@ -17,4 +17,5 @@ export interface ChildProps extends Read.ChildProps {
   isOver: boolean
   canDrop: boolean
   domRef: (el: Element) => void
+  onPointerUp: () => void
 }

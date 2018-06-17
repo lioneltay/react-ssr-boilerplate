@@ -25,6 +25,10 @@ const pointInRectangle = (
 }
 
 export default class Dropzone extends React.Component<Drop.Props> {
+  static defaultProps = {
+    canDrop: () => true
+  }
+
   domNode: Element | null = null
 
   domRef = (el: Element): void => {
@@ -40,8 +44,11 @@ export default class Dropzone extends React.Component<Drop.Props> {
       canDrop: false,
       domRef: this.domRef,
       onPointerUp: () => {
-        console.log('dropzone: onPointerUp')
-      }
+        if (this.props.onDrop && context.isDragging && context.type === this.props.type && this.props.canDrop() ) {
+          this.props.onDrop({ data: context.data, type: context.type })
+        }
+        console.log("dropzone: onPointerUp")
+      },
     }
   }
 

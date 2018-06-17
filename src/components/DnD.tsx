@@ -58,100 +58,78 @@ export default class DnD extends React.Component {
           </CursorElement>
 
           <Container>
-            <Draggable type="Item" data={{ id: 1 }}>
-              {({ makeProps, isDragging }) => (
-                <Box
-                  {...makeProps({
-                    onPointerDown: () => console.log("Usage: Pointer Down"),
-                  })}
-                >
-                  <div>Item</div>
-                  <div>{isDragging ? "Dragging" : "Not Dragging"}</div>
+            <Draggable type="fruit" data={{ name: "Apple" }}>
+              {({ makeProps, domRef }) => (
+                <Box {...makeProps({})} innerRef={domRef}>
+                  <div>Apple</div>
                 </Box>
               )}
             </Draggable>
 
-            <Draggable type="NotItem" data={{ id: 2 }}>
-              {({ makeProps, isDragging, domRef }) => (
-                <Box
-                  innerRef={domRef}
-                  {...makeProps({
-                    onPointerDown: () =>
-                      console.log("onPointerDown: cool beans"),
-                  })}
-                >
-                  <div>NotItem</div>
-                  <div>{isDragging ? "Dragging" : "Not Dragging"}</div>
+            <Draggable type="fruit" data={{ name: "Orange" }}>
+              {({ makeProps, domRef }) => (
+                <Box {...makeProps({})} innerRef={domRef}>
+                  <div>Orange</div>
+                </Box>
+              )}
+            </Draggable>
+
+            <Draggable type="meat" data={{ name: "Steak" }}>
+              {({ makeProps, domRef }) => (
+                <Box {...makeProps({})} innerRef={domRef}>
+                  <div>Steak</div>
+                </Box>
+              )}
+            </Draggable>
+
+            <Draggable type="meat" data={{ name: "Pork" }}>
+              {({ makeProps, domRef }) => (
+                <Box {...makeProps({})} innerRef={domRef}>
+                  <div>Pork</div>
                 </Box>
               )}
             </Draggable>
 
             <Dropzone
-              type="Item"
-              onDrop={({ data, type }) => {
-                return null
-              }}
-            >
-              {({ isDragging, data, type, isOver, domRef }) => (
-                <DropBox
-                  innerRef={domRef}
-                  highlighted={isDragging && type === "Item"}
-                >
-                  <div>Item</div>
-                  <pre>{JSON.stringify({ isOver, isDragging }, null, 2)}</pre>
-                </DropBox>
-              )}
-            </Dropzone>
-
-            <Dropzone
-              type="Item"
-              onDrop={({ data, type }) => {
-                return null
-              }}
-            >
-              {({ isDragging, data, type, isOver, domRef }) => (
-                <DropBox
-                  innerRef={domRef}
-                  highlighted={isOver && isDragging && type === "Item"}
-                >
-                  <div>Item Hover</div>
-                  <pre>{JSON.stringify({ isOver, isDragging }, null, 2)}</pre>
-                </DropBox>
-              )}
-            </Dropzone>
-
-            <Dropzone
-              type="NotItem"
+              type="fruit"
               onDragEnter={() => {}}
               onDragLeave={() => {}}
               onDragOver={() => {
                 return false
               }}
+              onDrop={({ data, type }) => {
+                console.log(data, type)
+              }}
             >
-              {({ isDragging, type, data, onPointerUp }) => (
+              {({ isDragging, type, data, isOver, domRef, onPointerUp }) => (
                 <DropBox
-                  highlighted={isDragging && type === "NotItem"}
+                  innerRef={domRef}
+                  highlighted={isDragging && type === "fruit"}
                   onPointerUp={onPointerUp}
                 >
-                  NotItem
+                  Fruit Bag
                 </DropBox>
               )}
             </Dropzone>
 
             <Dropzone
-              type="NotItem"
+              type="meat"
               onDragEnter={() => {}}
               onDragLeave={() => {}}
               onDragOver={() => {
                 return false
               }}
+              onDrop={({ data, type }) => {
+                console.log(data, type)
+              }}
             >
-              {({ isDragging, type, data, isOver, domRef }) => (
+              {({ isDragging, type, data, isOver, domRef, onPointerUp }) => (
                 <DropBox
                   innerRef={domRef}
-                  highlighted={isOver && isDragging && type === "NotItem"}
+                  highlighted={isDragging && type === "meat"}
+                  onPointerUp={onPointerUp}
                 >
-                  NotItem Hover
+                  Meat Bag
                 </DropBox>
               )}
             </Dropzone>
