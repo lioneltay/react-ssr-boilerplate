@@ -1,27 +1,6 @@
 import * as React from "react"
 import { hot } from "react-hot-loader"
-import { asyncComponent } from "async-component"
-// import SomeComponent from "components/SomeComponent"
-// import StaticComponent from "components/StaticComponent"
-import { Route, Link, Redirect } from "react-router-dom"
-
-import DND from "components/DnD"
-import styled from "styled-components"
-
-const Button = styled.button`
-  color: tomato;
-  background: green;
-`
-
-const AsyncAboutPage = asyncComponent({ loader: () => import("./about") })
-const AsyncHomePage = asyncComponent({ loader: () => import("./home") })
-const AsyncDeniedPage = asyncComponent({ loader: () => import("./denied") })
-const AsyncSomeComponent = asyncComponent({
-  loader: () => import("components/StaticComponent"),
-})
-const AsyncStaticComponent = asyncComponent({
-  loader: () => import("components/SomeComponent"),
-})
+import TypescriptPractice1 from "sandboxes/TypescriptPractice"
 
 interface AppProps {}
 
@@ -41,38 +20,7 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <div>
-        <DND />
-
-        <hr />
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Link to="/home">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/forbidden">Forbidden</Link>
-        </div>
-
-        <hr />
-
-        <Route path="/home" component={AsyncHomePage} />
-        <Route path="/about" component={AsyncAboutPage} />
-        <Route path="/denied" component={AsyncDeniedPage} />
-        <Route path="/forbidden" render={() => <Redirect to="/denied" />} />
-
-        <hr />
-
-        <h1>This Is So Awesome!!! {this.state.count}</h1>
-        <Button onClick={() => this.setState({ count: this.state.count + 1 })}>
-          Increment
-        </Button>
-
-        {/* <SomeComponent /> */}
-        <AsyncSomeComponent>
-          <div>Hello There</div>
-        </AsyncSomeComponent>
-
-        <hr />
-
-        {/* <StaticComponent /> */}
+        <TypescriptPractice1 />
       </div>
     )
   }
