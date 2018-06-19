@@ -1,9 +1,6 @@
 import * as React from "react"
-import * as DnD from "./types/DnD"
-import * as Read from "./types/Read"
-import * as Drop from "./types/Drop"
+import * as DnD from "dnd/types"
 import { Consumer } from "./context"
-import { getReaderChildProps } from "./Reader"
 
 interface Point {
   x: number
@@ -24,9 +21,28 @@ const pointInRectangle = (
   return x >= left && x <= right && y >= top && y <= bottom
 }
 
-export default class Dropzone extends React.Component<Drop.Props> {
+interface ChildProps {
+  isOver: boolean
+  canDrop: boolean
+  domRef: (el: Element) => void
+  onPointerUp: () => void
+}
+
+interface Props {
+  children: (data: ChildProps) => React.ReactElement<any>
+  type: DnD.Type
+  onDrop?: (
+    data: { data: DnD.Data; type: DnD.Type }
+  ) => DnD.DropData | null | void
+  onDragEnter?: (data: ChildProps) => void
+  onDragLeave?: (data: ChildProps) => void
+  onDragOver?: (data: ChildProps) => boolean
+  canDrop?: (data: ChildProps) => boolean
+}
+
+export default class Dropzone extends React.Component<Props> {
   static defaultProps = {
-    canDrop: () => true
+    canDrop: () => true,
   }
 
   domNode: Element | null = null
@@ -35,16 +51,20 @@ export default class Dropzone extends React.Component<Drop.Props> {
     this.domNode = el
   }
 
-  getChildProps = (context: DnD.Context): Drop.ChildProps => {
+  getChildProps = (context: DnD.Context): ChildProps => {
     return {
-      ...getReaderChildProps(context),
       isOver:
         !!this.domNode &&
         pointInRectangle(context.pointer, this.domNode.getBoundingClientRect()),
       canDrop: false,
       domRef: this.domRef,
       onPointerUp: () => {
-        if (this.props.onDrop && context.isDragging && context.type === this.props.type && this.props.canDrop() ) {
+        if (
+          this.props.onDrop &&
+          context.isDragging &&
+          context.type === this.props.type &&
+          this.props.canDrop()
+        ) {
           this.props.onDrop({ data: context.data, type: context.type })
         }
         console.log("dropzone: onPointerUp")

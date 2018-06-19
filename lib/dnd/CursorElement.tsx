@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as DnD from "./types/DnD"
+import * as DnD from "dnd/types"
 
 import { Consumer } from "./context"
 

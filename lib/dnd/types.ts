@@ -1,4 +1,4 @@
-import * as Action from "./Action"
+import * as Action from "dnd/types/Action"
 
 export type Type = string | number | (string | number)[]
 

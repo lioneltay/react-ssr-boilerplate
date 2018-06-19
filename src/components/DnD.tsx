@@ -40,12 +40,47 @@ const Container = styled.div`
   flex-wrap: wrap;
 `
 
-export default class DnD extends React.Component {
+const initialState = {
+  total: 0,
+}
+
+type State = Readonly<typeof initialState>
+
+const Item = ({ type, data }) => (
+  <Draggable type={type} data={data}>
+    {({ onPointerDown, domRef, isDragging }) => (
+      <Box onPointerDown={onPointerDown} innerRef={domRef}>
+        <div>{data.name}</div>
+        <div>{isDragging ? "Dragging" : "Not Dragging"}</div>
+      </Box>
+    )}
+  </Draggable>
+)
+
+const Basket = ({ type, onDrop }) => (
+  <Dropzone type={type} onDrop={onDrop}>
+    {({ isDragging, type: dragType, domRef, onPointerUp }) => (
+      <DropBox
+        innerRef={domRef}
+        highlighted={isDragging && dragType === type}
+        onPointerUp={onPointerUp}
+      >
+        {type} Bag
+      </DropBox>
+    )}
+  </Dropzone>
+)
+
+export default class DnD extends React.Component<{}, State> {
+  readonly state: State = initialState
+
   render() {
     return (
       <Provider>
         <div>
           <h1>DnD Playground!!!</h1>
+
+          <div>Total: {this.state.total}</div>
 
           <CursorElement>
             {() => {
@@ -58,90 +93,25 @@ export default class DnD extends React.Component {
           </CursorElement>
 
           <Container>
-            <Draggable type="fruit" data={{ name: "Apple" }}>
-              {({ makeProps, domRef }) => (
-                <Box {...makeProps({})} innerRef={domRef}>
-                  <div>Apple</div>
-                </Box>
-              )}
-            </Draggable>
+            <Item type="fruit" data={{ name: "Apple", price: 1 }} />
+            <Item type="meat" data={{ name: "Steak", price: 3 }} />
 
-            <Draggable type="fruit" data={{ name: "Orange" }}>
-              {({ makeProps, domRef }) => (
-                <Box {...makeProps({})} innerRef={domRef}>
-                  <div>Orange</div>
-                </Box>
-              )}
-            </Draggable>
-
-            <Draggable type="meat" data={{ name: "Steak" }}>
-              {({ makeProps, domRef }) => (
-                <Box {...makeProps({})} innerRef={domRef}>
-                  <div>Steak</div>
-                </Box>
-              )}
-            </Draggable>
-
-            <Draggable type="meat" data={{ name: "Pork" }}>
-              {({ makeProps, domRef }) => (
-                <Box {...makeProps({})} innerRef={domRef}>
-                  <div>Pork</div>
-                </Box>
-              )}
-            </Draggable>
-
-            <Dropzone
+            <Basket
               type="fruit"
-              onDragEnter={() => {}}
-              onDragLeave={() => {}}
-              onDragOver={() => {
-                return false
-              }}
               onDrop={({ data, type }) => {
                 console.log(data, type)
+                this.setState(state => ({ total: state.total + data.price }))
               }}
-            >
-              {({ isDragging, type, data, isOver, domRef, onPointerUp }) => (
-                <DropBox
-                  innerRef={domRef}
-                  highlighted={isDragging && type === "fruit"}
-                  onPointerUp={onPointerUp}
-                >
-                  Fruit Bag
-                </DropBox>
-              )}
-            </Dropzone>
+            />
 
-            <Dropzone
+            <Basket
               type="meat"
-              onDragEnter={() => {}}
-              onDragLeave={() => {}}
-              onDragOver={() => {
-                return false
-              }}
               onDrop={({ data, type }) => {
                 console.log(data, type)
+                this.setState(state => ({ total: state.total + data.price }))
               }}
-            >
-              {({ isDragging, type, data, isOver, domRef, onPointerUp }) => (
-                <DropBox
-                  innerRef={domRef}
-                  highlighted={isDragging && type === "meat"}
-                  onPointerUp={onPointerUp}
-                >
-                  Meat Bag
-                </DropBox>
-              )}
-            </Dropzone>
+            />
           </Container>
-
-          <Reader>
-            {({ isDragging, pointer }) => {
-              return (
-                <pre>{JSON.stringify({ isDragging, pointer }, null, 2)}</pre>
-              )
-            }}
-          </Reader>
 
           <div style={{ height: "100vh" }} />
         </div>

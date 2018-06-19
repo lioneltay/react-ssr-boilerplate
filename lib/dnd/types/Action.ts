@@ -1,4 +1,4 @@
-import * as DnD from "./DnD"
+import * as DnD from "dnd/types"
 
 export enum Type {
   DragStart,
