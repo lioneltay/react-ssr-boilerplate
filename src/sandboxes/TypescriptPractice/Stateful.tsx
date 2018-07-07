@@ -1,42 +1,43 @@
 import * as React from "react"
+import { withDefaultProps } from "./withDefaultProps"
 
 const initialState = {
-  clicksCount: 0,
-  bob: "hello",
+  count: 0,
+  mounted: false,
 }
 
 type State = Readonly<typeof initialState>
 
-type KeyOfState = keyof State
+interface DefaultButtonProps {
+  color: string
+}
 
-// Why are these different?
-const doStuff = <K extends keyof State>(state: State, key: K) => state[key]
-const doStuff = (state: State, key: KeyOfState) => state[key]
+type ButtonProps = DefaultButtonProps & {
+  onClick: (ev: React.MouseEvent<HTMLElement>) => void
+  label: string
+  color?: string
+}
 
-// The type of the result is different depending on the type implementation above!
-doStuff({ clicksCount: 5, bob: 'nug' }, "clicksCount")
+const Button: React.SFC<ButtonProps> = ({ onClick, label, color }) => (
+  <button style={{ color }} onClick={onClick}>
+    {label}: {color.toUpperCase()}
+  </button>
+)
 
-interface Props {}
+// const ButtonWithDefaults = withDefaultProps({ color: "red", nugget: 3 }, Button)
+const ButtonWithDefaults = withDefaultProps({ nugget: 3, color: "red" }, Button)
 
-const incrementCount = (prevState: State): Partial<State> => ({
-  clicksCount: prevState.clicksCount + 1,
-})
-const decrementCount = (prevState: State, props: Props) => ({
-  clicksCount: prevState.clicksCount - 1,
-})
-
-export default class Stateful extends React.Component<Props, State> {
-  readonly state: State = initialState
-
+export default class Stateful extends React.Component {
   render() {
     return (
       <div>
         <h1>Stateful</h1>
 
-        <button onClick={() => this.setState(incrementCount)}>Increment</button>
-        <button onClick={() => this.setState(decrementCount)}>decrement</button>
-
-        <div>Clicks: {this.state.clicksCount}</div>
+        <Button label="Hello There" onClick={() => console.log("hello")} />
+        <ButtonWithDefaults
+          label="Woot it works!"
+          onClick={() => console.log("hello")}
+        />
       </div>
     )
   }
